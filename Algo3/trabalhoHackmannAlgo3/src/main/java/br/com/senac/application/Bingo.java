@@ -1,3 +1,4 @@
+package br.com.senac.application;
 import java.awt.GridLayout;
 import java.util.Arrays;
 import java.util.Random;

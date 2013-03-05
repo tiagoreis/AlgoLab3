@@ -1,4 +1,4 @@
-package br.com.senac.main;
+package br.com.senac.application;
 import java.lang.reflect.Array;
 
 import javax.swing.JOptionPane;
