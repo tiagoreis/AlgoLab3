@@ -1,5 +1,7 @@
 package br.com.senac.main;
 
+import br.com.senac.application.Bingo;
+
 public class Main {
 
 	/**
