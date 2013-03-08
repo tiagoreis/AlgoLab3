@@ -1,6 +1,7 @@
 package br.com.senac.main;
 
 import br.com.senac.application.Bingo;
+import br.com.senac.application.BingoTeste;
 
 public class Main {
 
@@ -12,6 +13,10 @@ public class Main {
 
 		Bingo bingo = new Bingo();
 		bingo.gerarCartela1();
+		
+//		BingoTeste bingoTeste = new BingoTeste();
+//		bingoTeste.main(args);
+		
 	
 	}
 
