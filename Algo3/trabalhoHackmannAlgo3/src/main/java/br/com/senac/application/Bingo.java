@@ -27,7 +27,9 @@ public class Bingo extends JFrame implements MouseListener  {
 
 	private JFrame frame;
 	private JTextField txtTesteBin;
-
+	private int[][] numerosCartela1 = new int[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];
+	private JLabel[][] labelCartela1 = new JLabel[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -43,7 +45,7 @@ public class Bingo extends JFrame implements MouseListener  {
 
 	public Bingo() {
 		
-		boolean teste = false;
+		boolean teste = true;
 		
 		if(teste){
 			initialize();
@@ -59,7 +61,7 @@ public class Bingo extends JFrame implements MouseListener  {
 		
 			Random random = new Random();
 			
-			int[][]numerosCartela1 = new int[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];	
+				
 			
 			
 			JPanel cartela1 = new JPanel(new GridLayout(5,3));
@@ -146,7 +148,6 @@ public class Bingo extends JFrame implements MouseListener  {
 	
 	private void verificaNumeroCartela1(int[][] numerosCartela1,
 			int numeroRandom) {
-		// TODO Auto-generated method stub[
 		
 		for (int i = 0; i < numerosCartela1.length; i++) {
 			for (int j = 0; j < numerosCartela1.length; j++) {
@@ -192,6 +193,7 @@ public class Bingo extends JFrame implements MouseListener  {
 	
 	private void initialize() {
 
+		// TODO
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -207,15 +209,82 @@ public class Bingo extends JFrame implements MouseListener  {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0)), null));
+		panel_1.setLayout(new GridLayout(5, 5, 10, 3));
 		frame.getContentPane().add(panel_1, BorderLayout.WEST);
 		
-		JLabel lblCart = new JLabel("cart");
-		panel_1.add(lblCart);
+		JLabel lblCart = new JLabel("cartela 1 ");
+		int[][] numerosCartela1 = gerarNumerosCartela();
 		
-		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2);
+
+//		panel_1.add(lblCart);
+		panel_1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CARTELA 1", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));  
+		
+//		JPanel cartela1 = new JPanel();
+//		cartela1.setLayout(new GridLayout(5, 5, 10, 3));
+		
+		for (int i = 0; i < this.TAMANHO_CARTELA; i++) {
+			for (int j = 0; j < this.TAMANHO_CARTELA; j++) {
+				JLabel label = new JLabel();
+				
+				if(i == 2 && j == 2){
+					label.setText("Coringa");
+				} else {
+					label.setText(String.valueOf(numerosCartela1[i][j]));
+				}
+				panel_1.add(label);		
+				
+			}
+		}
+		
+//		cartela1.add(lblCart);
+//		cartela1.add(panel_1);
+		
 	}
 	
+	private int[][] gerarNumerosCartela() {
+		// TODO Auto-generated method stub
+		Random random = new Random();
+		int[][] numerosCartela = new int[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];
+		JLabel[][] labelCartela = new JLabel[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];
+		JPanel cartela1 = new JPanel(new GridLayout(5,5));
+/*		
+		for (int i = 0; i < this.TAMANHO_CARTELA; i++) {
+			for (int j = 0; j < this.TAMANHO_CARTELA; j++) {
+				
+				labelCartela[i][j] = new JLabel(); 
+				boolean validado = false;
+				int numeroRandom = 0;
+					
+					while(validado == false){
+						numeroRandom = random.nextInt(98 + 1);	
+						validado = validarNumero(numeroRandom, numerosCartela);
+						labelCartela[i][j].setText(String.valueOf(numeroRandom));
+//						cartela1.add(cartela1);
+					}
+				
+				
+			}
+		}
+*/
+		for (int i = 0; i < this.TAMANHO_CARTELA; i++) {
+			for (int j = 0; j < this.TAMANHO_CARTELA; j++) {
+				boolean validado = false;
+				int numeroRandom = 0;
+				while(validado == false){
+					numeroRandom = random.nextInt(98 + 1);	
+					validado = validarNumero(numeroRandom, numerosCartela1);
+					numerosCartela[i][j] = numeroRandom;	
+				}
+			}
+		}
+
+		
+		
+		
+		
+		return numerosCartela;
+	}
+
 	private void teste() {
 		this.setSize(200, 300);
 		this.criaGUI();
