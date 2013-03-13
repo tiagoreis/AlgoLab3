@@ -2,9 +2,10 @@ package br.com.senac.application;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
@@ -29,6 +30,10 @@ public class Bingo extends JFrame implements MouseListener  {
 	private JTextField txtTesteBin;
 	private int[][] numerosCartela1 = new int[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];
 	private JLabel[][] labelCartela1 = new JLabel[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];
+	private JButton botaoSortearNumero = new JButton();
+	private int[] numeroSorteado;
+	private JLabel numero = new JLabel();
+	
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -66,10 +71,10 @@ public class Bingo extends JFrame implements MouseListener  {
 			
 			JPanel cartela1 = new JPanel(new GridLayout(5,3));
 			JPanel cartela2 = new JPanel(new GridLayout(5,3));
-			JPanel grade = new JPanel(new GridLayout(5,5));
+//			JPanel grade = new JPanel(new GridLayout(5,5));
 			
-			JLabel label = new JLabel();
-			JLabel[][] labels = new JLabel[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];
+//			JLabel label = new JLabel();
+//			JLabel[][] labels = new JLabel[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];
 			
 //											     largura / altura	
 			cartela1.setLayout(new GridLayout(5, 3, 10, 3));
@@ -99,7 +104,7 @@ public class Bingo extends JFrame implements MouseListener  {
 					while(validado == false){
 						numeroRandom = random.nextInt(98 + 1);	
 						validado = validarNumeroJaSorteado(numeroRandom, numeroSorteado);
-						numeroSorteado[j] = numeroRandom;	
+//						numeroSorteado[j] = numeroRandom;	
 					}
 					
 					verificaNumeroCartela1(numerosCartela1, numeroRandom);
@@ -161,14 +166,34 @@ public class Bingo extends JFrame implements MouseListener  {
 	}
 
 	public boolean validarNumero(int numero, int[][] arrays){
-		boolean validou = true;
+		boolean validou = false;
 		
 		if(numero > 0 && numero < 100){
 			for (int i = 0; i < arrays.length; i++) {
 				for (int j = 0; j < arrays.length; j++) {
+					
 					if(arrays[i][j] == numero){
 						return false;
+					} else {
+						validou = true;
 					}
+				}
+			}
+		}
+		
+		return validou;
+	}
+
+	public boolean validarNumeroCartela(int numero){
+		boolean validou = false;
+		
+		if(numero > 0 && numero < 100){
+			for (int i = 0; i < numeroSorteado.length; i++) {
+					
+				if(numeroSorteado[i] == numero){
+					return false;
+				} else {
+					return true;
 				}
 			}
 		}
@@ -193,9 +218,8 @@ public class Bingo extends JFrame implements MouseListener  {
 	
 	private void initialize() {
 
-		// TODO
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(10, 10, 750, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
@@ -204,23 +228,72 @@ public class Bingo extends JFrame implements MouseListener  {
 		txtTesteBin = new JTextField();
 		txtTesteBin.setBackground(Color.RED);
 		txtTesteBin.setText("teste bin");
-		panel.add(txtTesteBin);
 		txtTesteBin.setColumns(10);
+		txtTesteBin.setEditable(false);
+		txtTesteBin.setEnabled(false);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0)), null));
-		panel_1.setLayout(new GridLayout(5, 5, 10, 3));
-		frame.getContentPane().add(panel_1, BorderLayout.WEST);
 		
-		JLabel lblCart = new JLabel("cartela 1 ");
-		int[][] numerosCartela1 = gerarNumerosCartela();
+		panel.add(txtTesteBin);
+		
+		JPanel cartela1 = new JPanel();
+		JPanel cartela2 = new JPanel();
+		JPanel centro = new JPanel();
+		
+		
+		cartela1.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0)), null));
+		cartela1.setLayout(new GridLayout(5, 5, 5, 3));
+		frame.getContentPane().add(cartela1, BorderLayout.WEST);
+		
+		cartela2.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0)), null));
+		cartela2.setLayout(new GridLayout(5, 5, 5, 3));
+		frame.getContentPane().add(cartela2, BorderLayout.EAST);
+		
+		centro.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0)), null));
+//		centro.setLayout(new GridLayout(2, 2, 2, 2));
+//		centro.setMaximumSize( new Dimension(50,40));
+		JLabel centroTitulo = new JLabel();
+		centroTitulo.setText("SORTEIO");
+		
+		JLabel centroIcone = new JLabel();
+		centroIcone.setIcon(new javax.swing.ImageIcon("C:\\xampp\\htdocs\\Teste bingo\\src\\bingo-sorteio.gif"));
+		
+		
+		
+		
+		//TODO
+		JLabel botao = new JLabel();
+		botaoSortearNumero.setText("Sortear Número");
+		botaoSortearNumero.addActionListener(new java.awt.event.ActionListener() {
+		    public void actionPerformed(java.awt.event.ActionEvent evt) {
+		    	
+		    	numero = botaoSortearNumeroActionPerformed(evt);
+		    }
+
+		});
+
+		botao.add(botaoSortearNumero);
+		
+		
+		centro.add(centroTitulo);
+		centro.add(centroIcone);
+//		centro.add(botao);
+		centro.add(botaoSortearNumero);
+		centro.add(numero);
+		
+		centro.setPreferredSize(new Dimension(80,60));
+
+		frame.getContentPane().add(centro, BorderLayout.CENTER);
 		
 
-//		panel_1.add(lblCart);
-		panel_1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CARTELA 1", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));  
 		
-//		JPanel cartela1 = new JPanel();
-//		cartela1.setLayout(new GridLayout(5, 5, 10, 3));
+		int[][] numerosCartela1 = gerarNumerosCartela();
+		int[][] numerosCartela2 = gerarNumerosCartela();
+		
+		
+
+		cartela1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CARTELA 1", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));  
+		cartela2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CARTELA 2", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));  
+		
 		
 		for (int i = 0; i < this.TAMANHO_CARTELA; i++) {
 			for (int j = 0; j < this.TAMANHO_CARTELA; j++) {
@@ -231,57 +304,44 @@ public class Bingo extends JFrame implements MouseListener  {
 				} else {
 					label.setText(String.valueOf(numerosCartela1[i][j]));
 				}
-				panel_1.add(label);		
+				cartela1.add(label);		
 				
 			}
 		}
-		
-//		cartela1.add(lblCart);
-//		cartela1.add(panel_1);
+
+		for (int i = 0; i < this.TAMANHO_CARTELA; i++) {
+			for (int j = 0; j < this.TAMANHO_CARTELA; j++) {
+				JLabel label = new JLabel();
+				
+				if(i == 2 && j == 2){
+					label.setText("Coringa");
+				} else {
+					label.setText(String.valueOf(numerosCartela2[i][j]));
+				}
+				cartela2.add(label);		
+				
+			}
+		}
+
 		
 	}
 	
 	private int[][] gerarNumerosCartela() {
-		// TODO Auto-generated method stub
 		Random random = new Random();
 		int[][] numerosCartela = new int[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];
-		JLabel[][] labelCartela = new JLabel[this.TAMANHO_CARTELA][this.TAMANHO_CARTELA];
-		JPanel cartela1 = new JPanel(new GridLayout(5,5));
-/*		
-		for (int i = 0; i < this.TAMANHO_CARTELA; i++) {
-			for (int j = 0; j < this.TAMANHO_CARTELA; j++) {
-				
-				labelCartela[i][j] = new JLabel(); 
-				boolean validado = false;
-				int numeroRandom = 0;
-					
-					while(validado == false){
-						numeroRandom = random.nextInt(98 + 1);	
-						validado = validarNumero(numeroRandom, numerosCartela);
-						labelCartela[i][j].setText(String.valueOf(numeroRandom));
-//						cartela1.add(cartela1);
-					}
-				
-				
-			}
-		}
-*/
+
 		for (int i = 0; i < this.TAMANHO_CARTELA; i++) {
 			for (int j = 0; j < this.TAMANHO_CARTELA; j++) {
 				boolean validado = false;
 				int numeroRandom = 0;
 				while(validado == false){
 					numeroRandom = random.nextInt(98 + 1);	
-					validado = validarNumero(numeroRandom, numerosCartela1);
+					validado = validarNumero(numeroRandom, numerosCartela);
 					numerosCartela[i][j] = numeroRandom;	
 				}
 			}
 		}
 
-		
-		
-		
-		
 		return numerosCartela;
 	}
 
@@ -307,6 +367,32 @@ public class Bingo extends JFrame implements MouseListener  {
 		window.add(carta2);
 		window.add(bt);
 	}
+	
+
+	private JLabel botaoSortearNumeroActionPerformed(ActionEvent evt) {
+		JLabel numeroBotao = new JLabel();
+		numeroBotao = gerarNumerosSorteado();
+		return numeroBotao;
+	}
+	
+	private JLabel gerarNumerosSorteado() {
+		Random random = new Random();
+		JLabel labelGerarNumerosSorteado = new JLabel(); 
+		boolean validado = false;
+		int numeroRandom = 0;
+		while(validado == false){
+			numeroRandom = random.nextInt(98 + 1);	
+//			validado = validarNumeroCartela(numeroRandom);
+			numero.setText(String.valueOf(numeroRandom));
+			labelGerarNumerosSorteado.setText(String.valueOf(numeroRandom));
+//			numeroSorteado = numeroRandom;
+			validado = true;
+			
+		}
+		return labelGerarNumerosSorteado;
+
+	}
+
 
 	public void mouseClicked(MouseEvent event) {
 		carta.setText("clicou");
